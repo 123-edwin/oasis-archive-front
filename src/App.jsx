@@ -2,9 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
-
-// Aquí irán tus páginas (puedes crearlas como componentes simples por ahora)
-const SearchPage = () => <div className="bg-slate-900 h-screen text-white p-10">Buscador de Oasis</div>;
+import SearchPage from './pages/SearchPage';
 
 function App() {
   const { status } = useContext(AuthContext);
