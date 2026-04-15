@@ -42,14 +42,14 @@ const EntryCard = ({ entry, onDelete, onEdit }) => {
   });
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 hover:border-zinc-700 transition-all shadow-xl">
-      <div className="flex gap-4">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 md:p-6 hover:border-zinc-700 transition-all shadow-xl overflow-hidden">
+      <div className="flex gap-3 md:gap-4">
         {/* Lado izquierdo: Album Art */}
         <div className="shrink-0">
           <img 
             src={entry.albumArt || '/default-album.png'}
             alt={entry.title}
-            className="w-20 h-20 rounded-xl object-cover shadow-lg border border-zinc-800"
+            className="w-14 h-14 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-zinc-800"
           />
         </div>
 
