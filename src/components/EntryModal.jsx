@@ -21,28 +21,40 @@ const StarRating = ({ rating, setRating, disabled }) => (
   </div>
 );
 
-const EntryModal = ({ track, onClose, onSuccess }) => {
-  const [content, setContent] = useState('');
-  const [rating, setRating] = useState(5);
+const EntryModal = ({ track, onClose, onSuccess, initialData = null }) => {
+  // Si hay initialData, usamos sus valores, si no, valores por defecto
+  const [content, setContent] = useState(initialData?.content || '');
+  const [rating, setRating] = useState(initialData?.rating || 5);
   const [loading, setLoading] = useState(false);
+
+  const isEditing = !!initialData; // Booleano para saber el modo
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Estructura de datos según tu Prisma Schema y controlador de Backend
-      await oasisApi.post('/entries', {
-        title: `Reseña de ${track.name}`,
-        content,
-        rating,
-        spotifyTrackId: track.spotifyId,
-        albumArt: track.coverArt
-      });
-      onSuccess();
+      if (isEditing) {
+        // MODO EDICIÓN
+            const { data } = await oasisApi.put(`/entries/${initialData.id}`, {
+          content,
+          rating
+        });
+        onSuccess(data); // Pasamos la data actualizada para el estado local
+      } else {
+        // MODO CREACIÓN
+        await oasisApi.post('/entries', {
+          title: `Reseña de ${track.name}`,
+          content,
+          rating,
+          spotifyTrackId: track.spotifyId,
+          albumArt: track.coverArt
+        });
+        onSuccess();
+      }
       onClose();
     } catch (error) {
-      console.error("Error al crear la reseña:", error);
+      console.error("Error en la operación:", error);
     } finally {
       setLoading(false);
     }
@@ -98,9 +110,9 @@ const EntryModal = ({ track, onClose, onSuccess }) => {
               disabled={loading || !content.trim() || !rating}
               className="flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-              {loading ? 'PUBLICANDO...' : (
+              {loading ? 'GUARDANDO...' : (
                 <>
-                  <Send size={18} /> PUBLICAR RESEÑA
+                  <Send size={18} /> {isEditing ? 'ACTUALIZAR RESEÑA' : 'PUBLICAR RESEÑA'}
                 </>
               )}
             </button>

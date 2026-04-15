@@ -2,15 +2,16 @@ import { useState, useEffect, useContext, useMemo } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import oasisApi from '../api/oasisApi';
 import EntryCard from '../components/EntryCard';
+import EntryModal from '../components/EntryModal'; // Asegúrate de importarlo
 import { Loader2, Radio } from 'lucide-react';
 
 const FeedPage = () => {
-  const [allEntries, setAllEntries] = useState([]); // Guardamos todo aquí
+  const [allEntries, setAllEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('all'); 
+  const [editingEntry, setEditingEntry] = useState(null);
   const { user } = useContext(AuthContext);
 
-  // Solo hacemos el fetch una vez al montar el componente
   useEffect(() => {
     const fetchEntries = async () => {
       try {
@@ -23,9 +24,8 @@ const FeedPage = () => {
       }
     };
     fetchEntries();
-  }, []); // [] significa que solo corre una vez
+  }, []);
 
-  // Usamos useMemo para filtrar. Es súper eficiente y no bloquea el hilo principal.
   const displayedEntries = useMemo(() => {
     if (tab === 'all') return allEntries;
     if (tab === 'my' && user) {
@@ -34,8 +34,20 @@ const FeedPage = () => {
     return [];
   }, [tab, allEntries, user]);
 
+  const handleEditSuccess = (updatedEntry) => {
+    setAllEntries(prev => prev.map(e => {
+      if (e.id === updatedEntry.id) {
+        // Mantenemos los datos del usuario original para no perder el nombre en la UI
+        return { ...updatedEntry, user: e.user };
+      }
+      return e;
+    }));
+    // Opcional: una notificación más elegante que un alert
+    console.log('Entry updated');
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-screen bg-transparent text-white p-6 relative z-10">
       <div className="max-w-3xl mx-auto pt-10 pb-20">
         <header className="mb-12 flex flex-col gap-4 md:flex-row md:items-center">
           <div className="p-3 bg-white rounded-2xl w-fit">
@@ -46,7 +58,6 @@ const FeedPage = () => {
             <p className="text-zinc-500 font-medium">Comunidad Oasis.</p>
           </div>
           
-          {/* Tabs */}
           <div className="flex gap-2 bg-zinc-900 p-1 rounded-full border border-zinc-800">
             <button
               className={`px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest transition-all ${tab === 'all' ? 'bg-white text-black' : 'text-zinc-500 hover:text-white'}`}
@@ -74,13 +85,28 @@ const FeedPage = () => {
                 <p className="text-zinc-600">No hay reseñas para mostrar en esta sección.</p>
               </div>
             ) : (
-              displayedEntries.map(entry => (
-                <EntryCard 
-                  key={entry.id} 
-                  entry={entry} 
-                  onDelete={(id) => setAllEntries(prev => prev.filter(e => e.id !== id))}
-                />
-              ))
+              <>
+                {displayedEntries.map(entry => (
+                  <EntryCard 
+                    key={entry.id} 
+                    entry={entry} 
+                    onDelete={(id) => setAllEntries(prev => prev.filter(e => e.id !== id))}
+                    onEdit={(entry) => setEditingEntry(entry)}
+                  />
+                ))}
+
+                {editingEntry && (
+                  <EntryModal
+                    initialData={editingEntry}
+                    track={{
+                      name: editingEntry.trackName,
+                      coverArt: editingEntry.albumArt
+                    }}
+                    onClose={() => setEditingEntry(null)}
+                    onSuccess={handleEditSuccess}
+                  />
+                )}
+              </>
             )}
           </div>
         )}

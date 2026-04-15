@@ -34,13 +34,13 @@ const FavoritesPage = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
+    <div className="min-h-screen bg-transparent flex items-center justify-center relative z-10">
       <div className="animate-pulse text-zinc-500 font-bold tracking-widest uppercase">Cargando Colección...</div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-screen bg-transparent text-white p-6 relative z-10">
       <div className="max-w-6xl mx-auto pt-10">
         <header className="flex justify-between items-end mb-12">
           <div>

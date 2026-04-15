@@ -1,4 +1,8 @@
-import { User, MessageSquare, Calendar } from 'lucide-react';
+import { User, MessageSquare, Calendar, Trash2, Pencil } from 'lucide-react';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import oasisApi from '../api/oasisApi';
 
 const SpotifyIcon = ({ size = 16, className = '' }) => (
   <svg
@@ -14,7 +18,22 @@ const SpotifyIcon = ({ size = 16, className = '' }) => (
   </svg>
 );
 
-const EntryCard = ({ entry }) => {
+const EntryCard = ({ entry, onDelete, onEdit }) => {
+  const { user } = useContext(AuthContext);
+  const canEditOrDelete = user && (user.role === 'ADMIN' || entry.userId === user.id);
+
+  const handleDelete = async () => {
+    if (!confirm(`¿Eliminar la reseña "${entry.title}"?`)) return;
+
+    try {
+      await oasisApi.delete(`/entries/${entry.id}`);
+      if (onDelete) onDelete(entry.id);
+      toast.success("Reseña eliminada correctamente");
+    } catch (error) {
+      const errorMsg = error?.response?.data?.message || error?.message || "No se pudo eliminar la reseña";
+      toast.error(errorMsg);
+    }
+  };
   // Formatear fecha para que se vea pro
   const date = new Date(entry.createdAt).toLocaleDateString('es-MX', {
     day: 'numeric',
@@ -54,10 +73,30 @@ const EntryCard = ({ entry }) => {
                   </a>
                 )}
               </p>
+              {/* Rating visual */}
+              <div className="flex items-center gap-1 mt-1">
+                {[1,2,3,4,5].map(star => (
+                  <span key={star} className={star <= (entry.rating || 0) ? 'text-yellow-400' : 'text-zinc-700'}>★</span>
+                ))}
+                <span className="ml-1 text-xs text-zinc-400">{entry.rating}/5</span>
+              </div>
             </div>
-            <div className="text-zinc-600 flex items-center gap-1 text-[10px] uppercase font-bold">
-              <Calendar size={12} />
-              {date}
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-600 flex items-center gap-1 text-[10px] uppercase font-bold">
+                <Calendar size={12} />
+                {date}
+              </span>
+              {canEditOrDelete && (
+                <span className="flex gap-1 ml-2">
+                  <button onClick={handleDelete} title="Eliminar" className="p-1 rounded-full hover:bg-red-900/60 transition-colors">
+                    <Trash2 size={18} className="text-red-400" />
+                  </button>
+                  {/* Botón de editar, funcionalidad a implementar */}
+                  <button onClick={() => onEdit && onEdit(entry)} title="Editar" className="p-1 rounded-full hover:bg-yellow-900/60 transition-colors">
+                    <Pencil size={18} className="text-yellow-400" />
+                  </button>
+                </span>
+              )}
             </div>
           </div>
 

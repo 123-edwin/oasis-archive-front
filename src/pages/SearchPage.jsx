@@ -67,7 +67,7 @@ const SearchPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white p-6">
+        <div className="min-h-screen bg-transparent text-white p-6 relative z-10">
             {/* Buscador Superior */}
             <div className="max-w-4xl mx-auto pt-10">
                 <h1 className="text-4xl font-black tracking-tighter mb-8 uppercase">Explora el Archivo</h1>
@@ -76,7 +76,7 @@ const SearchPage = () => {
                     <input
                         type="text"
                         placeholder="Busca una canción (ej. Supersonic)..."
-                        className="w-full bg-zinc-900 border border-zinc-800 py-4 px-6 pl-14 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-white transition-all"
+                        className="w-full bg-zinc-900/80 backdrop-blur border border-zinc-800 py-4 px-6 pl-14 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-white transition-all"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                     />
@@ -95,7 +95,7 @@ const SearchPage = () => {
                         <Loader2 className="animate-spin text-zinc-500" size={48} />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative z-20">
                         {tracks.map(track => (
                             <TrackCard
                                 key={track.spotifyId}
@@ -114,7 +114,7 @@ const SearchPage = () => {
                     onSuccess={() => toast.success('¡Reseña publicada con éxito! 🎸')}
                 />
             )}
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="dark" />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="dark" style={{ zIndex: 9000, marginTop: '70px' }} />
         </div>
     );
 };
