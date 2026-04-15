@@ -11,8 +11,9 @@ export const AuthProvider = ({ children }) => {
     if (!token) return setStatus('not-authenticated');
 
     try {
-      // Opcional: Crear un endpoint /auth/renew para validar el token
-      // Por ahora, si hay token, asumimos autenticado o validamos con la primera carga
+      // Consultar el backend para obtener el usuario real
+      const { data } = await oasisApi.get('/auth/me');
+      setUser(data);
       setStatus('authenticated');
     } catch (error) {
       console.error('Error checking auth token:', error);

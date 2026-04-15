@@ -37,8 +37,6 @@ const EntryModal = ({ track, onClose, onSuccess }) => {
         content,
         rating,
         spotifyTrackId: track.spotifyId,
-        trackName: track.name,
-        artistName: track.artist,
         albumArt: track.coverArt
       });
       onSuccess();

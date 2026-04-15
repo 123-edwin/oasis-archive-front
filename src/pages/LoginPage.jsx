@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Radio, LogIn } from 'lucide-react';
 import video1 from '../assets/1.webm';
@@ -111,7 +112,7 @@ const LoginPage = () => {
 
                 <div className="text-center">
                     <span className="text-zinc-500 text-sm">¿No tienes cuenta? </span>
-                    <a href="#" className="text-white hover:underline text-sm font-medium">Regístrate aquí</a>
+                    <Link to="/register" className="text-white hover:underline text-sm font-medium">Regístrate aquí</Link>
                 </div>
             </div>
         </div>

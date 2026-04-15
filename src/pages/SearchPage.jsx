@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import oasisApi from '../api/oasisApi';
 import TrackCard from '../components/TrackCard';
 import useDebounce from '../hooks/useDebounce';
@@ -48,6 +50,22 @@ const SearchPage = () => {
         searchTracks(debouncedQuery);
     }, [debouncedQuery]);
 
+    // Guardar favorito en la base de datos
+    const handleAddFavorite = async (track) => {
+        try {
+            const payload = {
+                spotifyId: track.spotifyId || track.id,
+                name: track.name,
+                artist: track.artist || track.artistName,
+                coverArt: track.coverArt || track.albumArt
+            };
+            await oasisApi.post('/favorites', payload);
+            toast.success('¡Agregado a favoritos! ⭐');
+        } catch (error) {
+            toast.error(error?.response?.data?.msg || 'No se pudo agregar a favoritos');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-black text-white p-6">
             {/* Buscador Superior */}
@@ -82,7 +100,7 @@ const SearchPage = () => {
                             <TrackCard
                                 key={track.spotifyId}
                                 track={track}
-                                onAddFavorite={(t) => console.log("Favorito:", t)}
+                                onAddFavorite={handleAddFavorite}
                                 onAddEntry={handleOpenModal}
                             />
                         ))}
@@ -93,9 +111,10 @@ const SearchPage = () => {
                 <EntryModal
                     track={selectedTrack}
                     onClose={() => setShowModal(false)}
-                    onSuccess={() => alert('¡Reseña publicada con éxito! 🎸')}
+                    onSuccess={() => toast.success('¡Reseña publicada con éxito! 🎸')}
                 />
             )}
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="dark" />
         </div>
     );
 };
