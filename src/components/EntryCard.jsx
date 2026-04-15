@@ -87,13 +87,13 @@ const EntryCard = ({ entry, onDelete, onEdit }) => {
                 {date}
               </span>
               {canEditOrDelete && (
-                <span className="flex gap-1 ml-2">
-                  <button onClick={handleDelete} title="Eliminar" className="p-1 rounded-full hover:bg-red-900/60 transition-colors">
-                    <Trash2 size={18} className="text-red-400" />
+                <span className="flex gap-1 ml-1 md:ml-2 shrink-0">
+                  <button onClick={handleDelete} title="Eliminar" className="p-1 rounded-full hover:bg-red-900/60 transition-colors flex-shrink-0">
+                    <Trash2 size={14} className="md:w-[18px] text-red-400" />
                   </button>
                   {/* Botón de editar, funcionalidad a implementar */}
-                  <button onClick={() => onEdit && onEdit(entry)} title="Editar" className="p-1 rounded-full hover:bg-yellow-900/60 transition-colors">
-                    <Pencil size={18} className="text-yellow-400" />
+                  <button onClick={() => onEdit && onEdit(entry)} title="Editar" className="p-1 rounded-full hover:bg-yellow-900/60 transition-colors flex-shrink-0">
+                    <Pencil size={14} className="md:w-[18px] text-yellow-400" />
                   </button>
                 </span>
               )}

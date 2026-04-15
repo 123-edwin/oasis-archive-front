@@ -61,8 +61,8 @@ const EntryModal = ({ track, onClose, onSuccess, initialData = null }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/80 backdrop-blur-sm">
+      <div className="bg-zinc-900 border border-zinc-800 w-full max-w-sm md:max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
         
         {/* Header con imagen del track */}
         <div className="relative h-32 bg-zinc-800">
@@ -91,7 +91,7 @@ const EntryModal = ({ track, onClose, onSuccess, initialData = null }) => {
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit} className="p-8 pt-12">
+        <form onSubmit={handleSubmit} className="p-4 md:p-8 pt-12">
           <label className="block text-zinc-500 text-xs font-bold uppercase tracking-widest mb-3">
             ¿Qué opinas de este track?
           </label>
