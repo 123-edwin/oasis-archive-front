@@ -64,34 +64,34 @@ const FavoritesPage = () => {
             {favorites.map((fav) => (
               <div 
                 key={fav.id} 
-                className="group flex items-center justify-between bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 p-4 rounded-2xl transition-all"
+                className="group flex items-center justify-between bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 p-2 md:p-4 rounded-2xl transition-all"
               >
                 <div className="flex items-center gap-6">
                   <img 
                     src={fav.albumArt} 
-                    alt={fav.trackName} 
-                    className="w-16 h-16 rounded-lg object-cover shadow-lg"
+                    alt={fav.trackName}
+                    className="w-12 md:w-16 h-12 md:h-16 rounded-lg object-cover shadow-lg flex-shrink-0"
                   />
                   <div>
-                    <h3 className="font-bold text-lg leading-none">{fav.trackName}</h3>
-                    <p className="text-zinc-500 mt-1">{fav.artistName}</p>
+                    <h3 className="font-bold text-base md:text-lg leading-none">{fav.trackName}</h3>
+                    <p className="text-zinc-500 text-xs md:text-sm mt-1">{fav.artistName}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-2 md:gap-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                   <a 
                     href={`https://open.spotify.com/track/${fav.spotifyTrackId}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="p-3 hover:bg-zinc-800 rounded-full text-zinc-400 hover:text-green-500 transition-colors"
+                    className="p-2 md:p-3 hover:bg-zinc-800 rounded-full text-zinc-400 hover:text-green-500 transition-colors"
                   >
-                    <ExternalLink size={20} />
+                    <ExternalLink size={18} className="md:w-5" />
                   </a>
                   <button 
                     onClick={() => handleDelete(fav.id, fav.trackName)}
-                    className="p-3 hover:bg-zinc-800 rounded-full text-zinc-400 hover:text-red-500 transition-colors"
+                    className="p-2 md:p-3 hover:bg-zinc-800 rounded-full text-zinc-400 hover:text-red-500 transition-colors"
                   >
-                    <Trash2 size={20} />
+                    <Trash2 size={18} className="md:w-5" />
                   </button>
                 </div>
               </div>

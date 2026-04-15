@@ -56,7 +56,7 @@ const EntryCard = ({ entry, onDelete, onEdit }) => {
         {/* Lado derecho: Contenido */}
         <div className="grow min-w-0">
           <div className="flex justify-between items-start mb-2">
-            <div>
+            <div className="flex-1 min-w-0">
               <h3 className="text-white font-bold truncate leading-tight">{entry.title}</h3>
               <p className="text-zinc-500 text-xs uppercase tracking-widest font-semibold flex items-center gap-2">
                 {entry.artistName}
@@ -81,23 +81,10 @@ const EntryCard = ({ entry, onDelete, onEdit }) => {
                 <span className="ml-1 text-xs text-zinc-400">{entry.rating}/5</span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-zinc-600 flex items-center gap-1 text-[10px] uppercase font-bold">
-                <Calendar size={12} />
-                {date}
-              </span>
-              {canEditOrDelete && (
-                <span className="flex gap-1 ml-1 md:ml-2 shrink-0">
-                  <button onClick={handleDelete} title="Eliminar" className="p-1 rounded-full hover:bg-red-900/60 transition-colors flex-shrink-0">
-                    <Trash2 size={14} className="md:w-[18px] text-red-400" />
-                  </button>
-                  {/* Botón de editar, funcionalidad a implementar */}
-                  <button onClick={() => onEdit && onEdit(entry)} title="Editar" className="p-1 rounded-full hover:bg-yellow-900/60 transition-colors flex-shrink-0">
-                    <Pencil size={14} className="md:w-[18px] text-yellow-400" />
-                  </button>
-                </span>
-              )}
-            </div>
+            <span className="text-zinc-600 flex items-center gap-1 text-[10px] uppercase font-bold flex-shrink-0 ml-2">
+              <Calendar size={12} />
+              {date}
+            </span>
           </div>
 
           <div className="bg-zinc-800/50 rounded-2xl p-4 mt-3 relative">
@@ -107,13 +94,25 @@ const EntryCard = ({ entry, onDelete, onEdit }) => {
              </p>
           </div>
 
-          <div className="mt-4 flex items-center gap-2">
-            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-black">
-              <User size={14} />
+          <div className="mt-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-black">
+                <User size={14} />
+              </div>
+              <span className="text-zinc-400 text-xs font-medium">
+                Publicado por <span className="text-white">{entry.user?.name || 'Anon'}</span>
+              </span>
             </div>
-            <span className="text-zinc-400 text-xs font-medium">
-              Publicado por <span className="text-white">{entry.user?.name || 'Anon'}</span>
-            </span>
+            {canEditOrDelete && (
+              <div className="flex gap-2">
+                <button onClick={handleDelete} title="Eliminar" className="p-2 md:p-1 rounded-full hover:bg-red-900/60 transition-colors">
+                  <Trash2 size={16} className="md:w-[18px] text-red-400" />
+                </button>
+                <button onClick={() => onEdit && onEdit(entry)} title="Editar" className="p-2 md:p-1 rounded-full hover:bg-yellow-900/60 transition-colors">
+                  <Pencil size={16} className="md:w-[18px] text-yellow-400" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
