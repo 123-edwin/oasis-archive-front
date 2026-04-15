@@ -20,6 +20,8 @@ dist-ssr
 .env.production.local
 .env.production
 .env.development
+# But DO track .env.example (it's a template without secrets)
+!.env.example
 .env.example
 
 # Editor directories and files
